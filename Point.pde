@@ -17,9 +17,14 @@ class Point {
     void setY(int y) {
         this.y = y;
     }
-    
+
     Point(int x, int y) {
         this.x = x;
         this.y = y;
+    }
+
+    @Override
+    public String toString() {
+        return String.format("x = %d, y = %d", this.x, this.y);
     }
 }

@@ -1,9 +1,12 @@
 class Pencil {
-    ArrayList<Point> pointList = new ArrayList<Point>();
+    ArrayList<Point> pointList = new ArrayList<>();
+    private PApplet p = new PApplet();
     int stepGather = (int)(5);
     boolean mode = false;
 
-    Pencil() {};
+    Pencil(PApplet p) {
+        this.p = p;
+    };
 
     Pencil(ArrayList<Point> p) {
         this.pointList = p;
@@ -41,26 +44,26 @@ class Pencil {
 
     void buttonInit() {
         if(this.mode) {
-            fill(195, 230, 240);
-            stroke(210, 230, 240);
-            rect(408, 50, 142, 80);
+            p.fill(195, 230, 240);
+            p.stroke(210, 230, 240);
+            p.rect(408, 50, 142, 80);
         }
-        fill(250, 250, 250);
-        stroke(0);
-        rect(408, 50, 112, 70);
+        p.fill(250, 250, 250);
+        p.stroke(0);
+        p.rect(408, 50, 112, 70);
     }
 
     void buttonReset() {
-        fill(220, 220, 220);
-        stroke(220, 220, 220);
-        rect(408, 50, 142, 80);
+        p.fill(220, 220, 220);
+        p.stroke(220, 220, 220);
+        p.rect(408, 50, 142, 80);
         this.buttonInit(); // this.mode should be false
     }
 
     void setMode() {
         Pain.mode = Pain.modePencil;
     }
-    
+
     void toggle() {
         if(this.mode) {
             this.mode = false;
@@ -72,22 +75,24 @@ class Pencil {
             Pain.mode = Pain.modePencil;
         }
     }
-    
+
     Pencil copy() {
-        ArrayList<Point> p = new ArrayList<>(); 
+        ArrayList<Point> p = new ArrayList<>();
         for(Point temp : this.pointList) {
             p.add(new Point(temp.getX(), temp.getY()));
         }
         Pencil pencil_temp = new Pencil(p);
         pencil_temp.setStepGather(this.stepGather);
+        pencil_temp.p = this.p; // ke ca de p private van truy cap truc tiep dc vi private la truy cap noi bo lop ma :V
         return pencil_temp;
     }
 
     void show() {
-      if(pointList.size() >= 2) {
-          for(int i = 1; i < pointList.size(); i++) {
-              line(pointList.get(i - 1).getX(), pointList.get(i - 1).getY(), pointList.get(i).getX(), pointList.get(i).getY());
-          }
-      }
+        p.stroke(0);
+        if(pointList.size() >= 2) {
+            for(int i = 1; i < pointList.size(); i++) {
+                p.line(pointList.get(i - 1).getX(), pointList.get(i - 1).getY(), pointList.get(i).getX(), pointList.get(i).getY());
+            }
+        }
     }
 }

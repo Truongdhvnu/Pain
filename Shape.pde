@@ -1,17 +1,53 @@
 abstract class Shape {
-    PApplet p = new PApplet();
-    int width = 0;
-    int height = 0;
-    abstract int getX0();
-    abstract int getY0();
-    abstract void setX0(int X0);
-    abstract void setY0(int Y0);
-    abstract int getxInit();
-    abstract int getyInit();
-    abstract void setWidth(int width);
-    abstract void setHeight(int height);
-    abstract int getWidth();
-    abstract int getHeight();
+    protected PApplet p = new PApplet();
+    protected int width = 0;
+    protected int height = 0;
+    protected int x0 = 0;
+    protected int y0 = 0;
+    protected int sizeBorder = 10;
+
+    protected int getSizeBorder() {
+        return sizeBorder;
+    }
+
+    protected void setSizeBorder(int sizeBorder) {
+        this.sizeBorder = sizeBorder;
+    }
+
+    public int getWidth() {
+        return width;
+    }
+
+    public void setWidth(int width) {
+        this.width = width;
+    }
+
+    public int getHeight() {
+        return height;
+    }
+
+    public void setHeight(int height) {
+        this.height = height;
+    }
+
+    public int getX0() {
+        return x0;
+    }
+
+    public void setX0(int x0) {
+        this.x0 = x0;
+    }
+
+    public int getY0() {
+        return y0;
+    }
+
+    public void setY0(int y0) {
+        this.y0 = y0;
+    }
+
+    abstract int getXInit();
+    abstract int getYInit();
     abstract boolean isInLeftBorder();
     abstract boolean isInDownBorder();
     abstract boolean isInDownRightCorner();
