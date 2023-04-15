@@ -4,7 +4,7 @@ PShape RIGHTPANEL;
 // khong the de cac PShape nay la static va tao cac phuong thuc static (goi ham shape()) o day de goi o class khac, vay phai lam sao de chay trong inteliJ
 
 static int check = 0;
-int canvasStepGather = 7;
+int canvasStepGather = 3;
 int realStepGather = 25;
 
 float canvasToRealRatio = 0.07;
@@ -33,7 +33,7 @@ static Shape tempShape; // can't create an instance of an abstract class
 ArrayList<Pencil> pencil = new ArrayList<>();
 Pencil tempPencil = new Pencil(this);
 
-Fuction f = new Fuction(5000, 6000, -2000, 2000);
+Fuction f = new Fuction(5000, 6000, -1070, 2000);
 
 //whether tempShape is inside working area
 public boolean insideWorkingArea() {
