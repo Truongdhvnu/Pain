@@ -1,3 +1,14 @@
+PShape BORDER;
+PShape TOOLBAR;
+PShape RIGHTPANEL;
+// khong the de cac PShape nay la static va tao cac phuong thuc static (goi ham shape()) o day de goi o class khac, vay phai lam sao de chay trong inteliJ
+
+static int check = 0;
+int canvasStepGather = 7;
+int realStepGather = 25;
+
+float canvasToRealRatio = 0.07;
+
 public static int mode = 0;
 public static int modeWaiting = 0;
 public static int modeSelected = 1;
@@ -17,12 +28,12 @@ public static int yClick = 0;
 Canvas canvas = new Canvas(this);
 
 ArrayList<Shape> shape = new ArrayList<>();
-Shape tempShape; // can't create an instance of an abstract class
+static Shape tempShape; // can't create an instance of an abstract class
 
 ArrayList<Pencil> pencil = new ArrayList<>();
 Pencil tempPencil = new Pencil(this);
 
-//Fuction f = new Fuction(2000, 5000, -2000, 2000);
+Fuction f = new Fuction(5000, 6000, -2000, 2000);
 
 //whether tempShape is inside working area
 public boolean insideWorkingArea() {
@@ -37,27 +48,19 @@ public boolean insideWorkingArea() {
 public void checkMode() {
     // dua doan code nay vao file Canvas
     // click on Ring button
-    if(mouseX > 35 && mouseX < 115 && mouseY > 15 && mouseY < 85) {
-        if(canvas.rectangle.mode) {
-            canvas.rectangle.toggle();
-        } else if(canvas.pencil.mode) {
-            canvas.pencil.toggle();
-        }
-        canvas.ring.toggle();
-    } else if(mouseX > 175 && mouseX < 175 + 112 && mouseY > 15 && mouseY < 85) {
-        if(canvas.ring.mode) {
-            canvas.ring.toggle();
-        } else if(canvas.pencil.mode) {
-            canvas.pencil.toggle();
-        }
-        canvas.rectangle.toggle();
-    } else if(mouseX > 352 && mouseX < 352 + 112 && mouseY > 15 && mouseY < 85) {
-        if(canvas.rectangle.mode) {
-            canvas.rectangle.toggle();
-        } if(canvas.ring.mode) {
-            canvas.ring.toggle();
-        }
-        canvas.pencil.toggle();
+    int temp = mode;
+    mode = Pain.modeSelected;
+    if(canvas.rectangle.isInsideButton()) {
+        canvas.rectangle.buttonActive();
+        tempShape = new Rectangle(this);
+    } else if(canvas.ring.isInsideButton()) {        
+        canvas.ring.buttonActive();
+        tempShape = new Ring(this);
+    } else if(canvas.pencil.isInsideButton()) {
+        canvas.pencil.buttonActive();
+        canvas.pencil.setMode();
+    } else {
+        mode = temp;
     }
 }
 
@@ -86,6 +89,7 @@ public void mouseClicked() {
             mode = Pain.modeMove;
         } else {
             shape.add(tempShape.copy());
+            tempShape.refresh();
             mode = Pain.modeSelected;
         }
     } else if(mode <= Pain.modeMove) {
@@ -121,12 +125,15 @@ public void settings() {
 }
 
 public void setup() {
+    strokeWeight(1);
     surface.setLocation(-10, 0);
     rectMode(CENTER);
+    BORDER = loadShape("./svg/Border.svg");
+    TOOLBAR = loadShape("./svg/Toolbar.svg");
+    RIGHTPANEL = loadShape("./svg/RightPanel.svg");
 }
 
 public void draw() {
-    background(210, 230, 240);
     canvas.workingAreaInit();
 
     for(Shape s: shape) {
@@ -136,24 +143,19 @@ public void draw() {
     for(Pencil p: pencil) {
         p.show();
     }
-
+    if(check == 0) {
+      f.show();
+      //check++;
+    }
+    
     canvas.canvasRefine();
-
-    //f.show();
-    line(200, 200, 600, 600);
-
+    
     if(mode == Pain.modeSelected) {
         // if part of shape inside working area
         if(mouseX < 1095 && mouseY > 105) {
-            if(canvas.ring.mode) {
-                tempShape = new Ring(this);
-                tempShape.show();
-            } else if(canvas.rectangle.mode) {
-                tempShape = new Rectangle(this);
-                tempShape.show();
-            }
-            // co the sửa thành tempShape = canvas.checkMode() hàm này dùng vị trí con trỏ để khởi tạo đối tượng phù hợp(dat cau lenh nay trong ham click luon
-            //sau do o day thay doi x0, y0 va show thoi
+            tempShape.setX0(mouseX);
+            tempShape.setY0(mouseY);
+            tempShape.show();
         }
     } else if (mode == Pain.modeRNM) {
         tempShape.init();

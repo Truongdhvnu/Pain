@@ -4,7 +4,7 @@ abstract class Shape {
     protected int height = 0;
     protected int x0 = 0;
     protected int y0 = 0;
-    protected int sizeBorder = 10;
+    protected int sizeBorder = 7;
 
     protected int getSizeBorder() {
         return sizeBorder;
@@ -52,11 +52,11 @@ abstract class Shape {
     abstract boolean isInDownBorder();
     abstract boolean isInDownRightCorner();
     abstract boolean isInside();
+    abstract boolean isInsideButton();
     abstract void resize();
-    abstract void buttonInit();
-    abstract void buttonReset();
+    abstract void buttonActive();
     abstract void init();
-    //abstract void toggle();
+    abstract void refresh();
     abstract void show();
     abstract Shape copy();
 }

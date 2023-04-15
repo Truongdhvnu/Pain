@@ -1,30 +1,30 @@
 class Point {
-    int x;
-    int y;
+    float x;
+    float y;
 
-    int getX() {
+    float getX() {
         return this.x;
     }
 
-    int getY() {
+    float getY() {
         return this.y;
     }
 
-    void setX(int x) {
+    void setX(float x) {
         this.x = x;
     }
 
-    void setY(int y) {
+    void setY(float y) {
         this.y = y;
     }
 
-    Point(int x, int y) {
+    Point(float x, float y) {
         this.x = x;
         this.y = y;
     }
 
     @Override
     public String toString() {
-        return String.format("x = %d, y = %d", this.x, this.y);
+        return String.format("x = %f, y = %f", this.x, this.y);
     }
 }

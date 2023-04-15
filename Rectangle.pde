@@ -1,4 +1,12 @@
-class Rectangle extends Shape{
+class Rectangle extends Shape {
+    /*
+    (buttonX0, buttonY0) la go trai tren cua button, (buttonX1, buttonY1) la goc phai duoi cua button
+    */
+    private int buttonX0 = 865;
+    private int buttonY0 = 25;
+    private int buttonX1 = 915;
+    private int buttonY1 = 75;
+
     private int widthInit = 160;
     private int heightInit = 160;
     /*
@@ -6,7 +14,7 @@ class Rectangle extends Shape{
     luu y; cho nay co the khong can khai bao va dung 2 bien widthInit va heightInit
     bang cach: mang cac bien height va width xuong lop con, nhung khi do: gia tri khoi tao nay bi co dinh va khong thay doi qua ham dc
     hoac     : set gia tri mac dinh tai lop cha, nhung khi do: gia tri mac dinh cho tat ca cac hinh
- */
+     */
     boolean mode = false;
 
     public Rectangle(PApplet p, int x0, int y0, int width, int height) {
@@ -71,49 +79,41 @@ class Rectangle extends Shape{
                 && abs(p.mouseY - this.y0) < this.height / 2.0 - 15 / 2.0;
     }
 
+    boolean isInsideButton() {
+        if(p.mouseX > this.buttonX0 && p.mouseX < this.buttonX1
+                && p.mouseY > this.buttonY0 && p.mouseY < this.buttonY1) {
+                      this.mode = true;
+                      return true;
+        }
+        return false;
+    }
+
     void resize() {
 
     }
-
-    void buttonInit() {
-        if(mode) {
-            p.fill(195, 230, 240);
-            p.stroke(210, 230, 240);
-            p.rect(231, 50, 142, 80);
-        }
-        p.fill(250, 250, 250);
-        p.stroke(0);
-        p.rect(231, 50, 112, 70);
-    }
-
-    void buttonReset() {
-        p.fill(220, 220, 220);
-        p.stroke(220, 220, 220);
-        p.rect(231, 50, 142, 80);
-        this.buttonInit();// mode should be false
+    
+    void buttonActive() {
+        shape(TOOLBAR, 0, 0, 1920, 1000);
+        p.fill(195, 230, 240, 60);
+        p.stroke(255);
+        p.rect((this.buttonX0 + this.buttonX1) / 2.0, (this.buttonY0 + this.buttonY1) / 2.0
+             ,this.buttonX1 - this.buttonX0 + this.sizeBorder, this.buttonY1 - this.buttonY0 + this.sizeBorder);
     }
 
     void init() {
-        p.fill(195, 220, 230, 120); // opacity
+        p.fill(195, 220, 240, 140);
         p.stroke(190, 230, 250);
         p.rect(this.x0, this.y0, this.width + sizeBorder, this.height + sizeBorder);
         this.show();
     }
-
+    
+    void refresh() {
+        this.width = this.widthInit;
+        this.height = this.heightInit;
+    }
+    
     void setMode() {
         Pain.mode = Pain.modeSelected;
-    }
-
-    void toggle() {
-        if(this.mode) {
-            this.mode = false;
-            this.buttonReset();
-            Pain.mode = Pain.modeWaiting;
-        } else {
-            this.mode = true;
-            this.buttonInit();
-            Pain.mode = Pain.modeSelected;
-        }
     }
 
     void show() {

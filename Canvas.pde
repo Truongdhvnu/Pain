@@ -21,12 +21,6 @@ class Canvas {
     public Canvas();
      */
 
-    void buttonInit() {
-        ring.buttonInit();
-        rectangle.buttonInit();
-        pencil.buttonInit();
-    }
-
     void workingAreaInit() {
         //size of working area is 1095 x 875 (~4/5)
         p.fill(250, 250, 250); //cung chang the thay p bang Pain.p thai sao ??
@@ -35,18 +29,13 @@ class Canvas {
     }
 
     void canvasRefine() {
-        //toolbar
-        p.fill(220, 220, 220);
-        p.stroke(255);
-        p.rect(960, 50, 1920, 100);
-        //rift
-        p.fill(210, 230, 240);
-        p.stroke(210, 230, 240);
-        p.rect(960, 112, 1920, 25);
-        //right area
-        p.fill(210, 230, 240);
-        p.stroke(210, 230, 240);
-        p.rect(1507, 562, 825, 875);
-        this.buttonInit();
+        shape(BORDER, 0, 0, 1920, 1000);
+        shape(TOOLBAR, 0, 0, 1920, 1000);
+        shape(RIGHTPANEL, 0, 0, 1920, 1000);
+        if(Pain.mode < Pain.modePencil && Pain.mode >= Pain.modeSelected) {
+            Pain.tempShape.buttonActive();
+        } else if (Pain.mode == Pain.modePencil) {
+            this.pencil.buttonActive();
+        }
     }
 }

@@ -1,7 +1,16 @@
 class Pencil {
-    ArrayList<Point> pointList = new ArrayList<>();
+    /*
+    (buttonX0, buttonY0) la go trai tren cua button, (buttonX1, buttonY1) la goc phai duoi cua button
+    */
+    private int buttonX0 = 1030;
+    private int buttonY0 = 25;
+    private int buttonX1 = 1070;
+    private int buttonY1 = 75;
+
+    private int sizeBorder = 10;
+    private ArrayList<Point> pointList = new ArrayList<>();
     private PApplet p = new PApplet();
-    int stepGather = (int)(5);
+    
     boolean mode = false;
 
     Pencil(PApplet p) {
@@ -10,14 +19,6 @@ class Pencil {
 
     Pencil(ArrayList<Point> p) {
         this.pointList = p;
-    }
-
-    public int getStepGather() {
-        return this.stepGather;
-    }
-
-    public void setStepGather(float stepGather) {
-        this.stepGather = (int)(stepGather);
     }
 
     public ArrayList<Point> getPointList() {
@@ -34,7 +35,7 @@ class Pencil {
             return true;
         } else {
             Point temp = pointList.get(pointList.size() - 1);
-            if(abs(temp.getX() - p.getX()) >= stepGather || abs(temp.getY() - p.getY()) >= stepGather) {
+            if(abs(temp.getX() - p.getX()) >= canvasStepGather || abs(temp.getY() - p.getY()) >= canvasStepGather) {
                 pointList.add(p);
                 return true;
             }
@@ -42,38 +43,25 @@ class Pencil {
         }
     }
 
-    void buttonInit() {
-        if(this.mode) {
-            p.fill(195, 230, 240);
-            p.stroke(210, 230, 240);
-            p.rect(408, 50, 142, 80);
+    boolean isInsideButton() {
+        if(p.mouseX > this.buttonX0 && p.mouseX < this.buttonX1
+                && p.mouseY > this.buttonY0 && p.mouseY < this.buttonY1) {
+                      this.mode = true;
+                      return true;
         }
-        p.fill(250, 250, 250);
-        p.stroke(0);
-        p.rect(408, 50, 112, 70);
+        return false;
     }
 
-    void buttonReset() {
-        p.fill(220, 220, 220);
-        p.stroke(220, 220, 220);
-        p.rect(408, 50, 142, 80);
-        this.buttonInit(); // this.mode should be false
+    void buttonActive() {
+        shape(TOOLBAR, 0, 0, 1920, 1000);
+        p.fill(195, 230, 240, 60);
+        p.stroke(255);
+        p.rect((this.buttonX0 + this.buttonX1) / 2.0, (this.buttonY0 + this.buttonY1) / 2.0
+             ,this.buttonX1 - this.buttonX0 + this.sizeBorder, this.buttonY1 - this.buttonY0 + this.sizeBorder);
     }
 
     void setMode() {
         Pain.mode = Pain.modePencil;
-    }
-
-    void toggle() {
-        if(this.mode) {
-            this.mode = false;
-            this.buttonReset();
-            Pain.mode = Pain.modeWaiting;
-        } else {
-            this.mode = true;
-            this.buttonInit();
-            Pain.mode = Pain.modePencil;
-        }
     }
 
     Pencil copy() {
@@ -82,7 +70,6 @@ class Pencil {
             p.add(new Point(temp.getX(), temp.getY()));
         }
         Pencil pencil_temp = new Pencil(p);
-        pencil_temp.setStepGather(this.stepGather);
         pencil_temp.p = this.p; // ke ca de p private van truy cap truc tiep dc vi private la truy cap noi bo lop ma :V
         return pencil_temp;
     }
