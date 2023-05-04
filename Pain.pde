@@ -1,3 +1,9 @@
+import processing.serial.*;
+Serial myPort;
+static byte[] sendDataStatus = new byte[1];
+final byte REQUEST_DATA = 1;
+final byte REQUEST_CONNECT = 2;
+
 PShape BORDER;
 PShape TOOLBAR;
 PShape RIGHTPANEL;
@@ -7,7 +13,7 @@ static int check = 0;
 int canvasStepGather = 3;
 int realStepGather = 25;
 
-float canvasToRealRatio = 0.07;
+static float canvasToRealRatio = 0.07;
 
 public static int mode = 0;
 public static int modeWaiting = 0;
@@ -18,12 +24,15 @@ public static int modeResizeDown = 4;
 public static int modeResizeDownLeft = 5;
 public static int modeMove = 6;
 public static int modePencil = 20;
+public static int modeSending = 21;
 
 public static int xInit = 0;
 public static int yInit = 0;
 
 public static int xClick = 0;
 public static int yClick = 0;
+
+static boolean init_bluetooth = true;
 
 Canvas canvas = new Canvas(this);
 
@@ -33,7 +42,7 @@ static Shape tempShape; // can't create an instance of an abstract class
 ArrayList<Pencil> pencil = new ArrayList<>();
 Pencil tempPencil = new Pencil(this);
 
-Fuction f = new Fuction(5000, 6000, -1070, 2000);
+Fuction f = new Fuction(5000, 6000, -2000, 2000);
 
 //whether tempShape is inside working area
 public boolean insideWorkingArea() {
@@ -47,7 +56,7 @@ public boolean insideWorkingArea() {
 
 public void checkMode() {
     // dua doan code nay vao file Canvas
-    // click on Ring button
+
     int temp = mode;
     mode = Pain.modeSelected;
     if(canvas.rectangle.isInsideButton()) {
@@ -59,6 +68,9 @@ public void checkMode() {
     } else if(canvas.pencil.isInsideButton()) {
         canvas.pencil.buttonActive();
         canvas.pencil.setMode();
+    } else if(canvas.sendPoint.isInsideButton()) {
+        canvas.sendPoint.buttonActive();
+        canvas.sendPoint.setMode();  
     } else {
         mode = temp;
     }
@@ -98,6 +110,19 @@ public void mouseClicked() {
         if(mouseX > 1095 | mouseY < 105) {
               checkMode();
           }
+    } else if(mode == Pain.modeSending) {
+        noLoop();
+        SendPoint send_point = new SendPoint();
+        if(pencil.size() > 0) {
+            Pencil p = pencil.get(0);
+            send_point.setRealPointList(p.getRealPointList());
+            ArrayList<Point> check = send_point.getRealPointList();
+            for (Point k: check) {
+                println(k);
+            }
+            send_point.sendData();
+        }
+        loop();
     }
 }
 
@@ -120,13 +145,23 @@ public void mouseReleased() {
     }
 }
 
+void serialEvent(Serial myPort){ 
+  sendDataStatus = myPort.readBytes(1);
+  println("received data " + sendDataStatus[0]);
+  //if(sendDataStatus[0] == REQUEST_CONNECT) {
+  //  myPort.write(REQUEST_CONNECT);
+  //}
+}
+
 public void settings() {
     size(1920, 1000);
 }
 
 public void setup() {
+    myPort = new Serial(this, "COM10", 115200);
+    sendDataStatus[0] = 0;
     strokeWeight(1);
-    surface.setLocation(-10, 0);
+    surface.setLocation(0, 0);
     rectMode(CENTER);
     BORDER = loadShape("./svg/Border.svg");
     TOOLBAR = loadShape("./svg/Toolbar.svg");
@@ -142,6 +177,7 @@ public void draw() {
 
     for(Pencil p: pencil) {
         p.show();
+        
     }
     if(check == 0) {
       f.show();
@@ -198,7 +234,6 @@ public void draw() {
             tempShape.setY0(mouseY);
         }
         tempShape.init();
-    } else if(mode == Pain.modePencil) {
-    }
+    } else {}
 
 }

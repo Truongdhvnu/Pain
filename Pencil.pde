@@ -9,6 +9,7 @@ class Pencil {
 
     private int sizeBorder = 10;
     private ArrayList<Point> pointList = new ArrayList<>();
+    private ArrayList<Point> realPointList = new ArrayList<>();
     private PApplet p = new PApplet();
     
     boolean mode = false;
@@ -17,8 +18,11 @@ class Pencil {
         this.p = p;
     };
 
-    Pencil(ArrayList<Point> p) {
-        this.pointList = p;
+    Pencil(ArrayList<Point> plist) {
+        this.pointList = plist;
+        for(Point p: plist) {
+            realPointList.add(new Point(p.getX()/Pain.canvasToRealRatio, (p.getY()-canvas.yWorkingAreaStart)/Pain.canvasToRealRatio));
+        }
     }
 
     public ArrayList<Point> getPointList() {
@@ -29,14 +33,20 @@ class Pencil {
         this.pointList = pointList;
     }
 
+    public ArrayList<Point> getRealPointList() {
+        return this.realPointList;
+    }
+    
     boolean addPoint(Point p) {
         if(pointList.size() == 0) {
             pointList.add(p);
+            realPointList.add(new Point(p.getX()/Pain.canvasToRealRatio, (p.getY()-canvas.yWorkingAreaStart)/Pain.canvasToRealRatio));
             return true;
         } else {
             Point temp = pointList.get(pointList.size() - 1);
             if(abs(temp.getX() - p.getX()) >= canvasStepGather || abs(temp.getY() - p.getY()) >= canvasStepGather) {
                 pointList.add(p);
+                realPointList.add(new Point(p.getX()/Pain.canvasToRealRatio, (p.getY()-canvas.yWorkingAreaStart)/Pain.canvasToRealRatio));
                 return true;
             }
             return false;
@@ -81,5 +91,10 @@ class Pencil {
                 p.line(pointList.get(i - 1).getX(), pointList.get(i - 1).getY(), pointList.get(i).getX(), pointList.get(i).getY());
             }
         }
+        //System.out.println("real point of pencil:");
+        //for(Point p: this.realPointList) {
+        //    System.out.println(p);
+        //}
     }
+    
 }

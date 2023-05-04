@@ -102,10 +102,10 @@ class Fuction {
             line(pCanvas.get(i).x, pCanvas.get(i).y, pCanvas.get(i + 1).x, pCanvas.get(i + 1).y);
             //System.out.println(pCanvas.get(i));
         }
-        System.out.println("REAL POINTS:");
-        for(Point p: this.pointList) {
-            System.out.println(p);
-        }
+        //System.out.println("REAL POINTS:");
+        //for(Point p: this.pointList) {
+        //    System.out.println(p);
+        //}
     }
     
 }
