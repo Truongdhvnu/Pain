@@ -58,7 +58,7 @@ public void checkMode() {
     // dua doan code nay vao file Canvas
 
     int temp = mode;
-    mode = Pain.modeSelected;
+    mode = Paint.modeSelected;
     if(canvas.rectangle.isInsideButton()) {
         canvas.rectangle.buttonActive();
         tempShape = new Rectangle(this);
@@ -77,9 +77,9 @@ public void checkMode() {
 }
 
 public void mouseClicked() {
-    if(mode == Pain.modeWaiting) {
+    if(mode == Paint.modeWaiting) {
         checkMode();
-    } else if(mode == Pain.modeSelected) {
+    } else if(mode == Paint.modeSelected) {
         // ousite of working area
         if(mouseX > 1095 | mouseY < 105) {
             checkMode();
@@ -88,29 +88,29 @@ public void mouseClicked() {
             tempShape.setY0(mouseY);
             xInit = tempShape.getXInit();
             yInit = tempShape.getYInit();
-            mode = Pain.modeRNM;
+            mode = Paint.modeRNM;
         }
-    } else if(mode == Pain.modeRNM) {
+    } else if(mode == Paint.modeRNM) {
         if(tempShape.isInLeftBorder()) {
-            mode = Pain.modeResizeLeft;
+            mode = Paint.modeResizeLeft;
         } else if(tempShape.isInDownBorder()) {
-            mode = Pain.modeResizeDown;
+            mode = Paint.modeResizeDown;
         } else if (tempShape.isInDownRightCorner()) {
-            mode = Pain.modeResizeDownLeft;
+            mode = Paint.modeResizeDownLeft;
         } else if (tempShape.isInside()) {
-            mode = Pain.modeMove;
+            mode = Paint.modeMove;
         } else {
             shape.add(tempShape.copy());
             tempShape.refresh();
-            mode = Pain.modeSelected;
+            mode = Paint.modeSelected;
         }
-    } else if(mode <= Pain.modeMove) {
-        mode = Pain.modeRNM;
-    } else if(mode == Pain.modePencil) {
+    } else if(mode <= Paint.modeMove) {
+        mode = Paint.modeRNM;
+    } else if(mode == Paint.modePencil) {
         if(mouseX > 1095 | mouseY < 105) {
               checkMode();
           }
-    } else if(mode == Pain.modeSending) {
+    } else if(mode == Paint.modeSending) {
         noLoop();
         SendPoint send_point = new SendPoint();
         if(pencil.size() > 0) {
@@ -127,14 +127,14 @@ public void mouseClicked() {
 }
 
 public void mouseDragged() {
-    if(mode == Pain.modePencil) {
+    if(mode == Paint.modePencil) {
         tempPencil.addPoint(new Point(mouseX, mouseY));
         tempPencil.show();
     }
 }
 
 public void mouseReleased() {
-    if(mode == Pain.modePencil) {
+    if(mode == Paint.modePencil) {
         int temp = tempPencil.getPointList().size();
         if (temp > 1) {
             pencil.add(tempPencil.copy());
@@ -158,7 +158,7 @@ public void settings() {
 }
 
 public void setup() {
-    myPort = new Serial(this, "COM10", 115200);
+    //myPort = new Serial(this, "COM10", 115200);
     sendDataStatus[0] = 0;
     strokeWeight(1);
     surface.setLocation(0, 0);
@@ -186,14 +186,14 @@ public void draw() {
     
     canvas.canvasRefine();
     
-    if(mode == Pain.modeSelected) {
+    if(mode == Paint.modeSelected) {
         // if part of shape inside working area
         if(mouseX < 1095 && mouseY > 105) {
             tempShape.setX0(mouseX);
             tempShape.setY0(mouseY);
             tempShape.show();
         }
-    } else if (mode == Pain.modeRNM) {
+    } else if (mode == Paint.modeRNM) {
         tempShape.init();
         if(tempShape.isInLeftBorder()) {
             cursor(CROSS);
@@ -204,21 +204,21 @@ public void draw() {
         } else {
             cursor(ARROW);
         }
-    } else if (mode == Pain.modeResizeLeft) {
+    } else if (mode == Paint.modeResizeLeft) {
         //right
         if(mouseX > xInit) {
             tempShape.setX0((int)((mouseX + xInit)/2)); // (int) is redundant because int/int return int
             tempShape.setWidth(mouseX - xInit);
         }
         tempShape.init();
-    } else if(mode == Pain.modeResizeDown) {
+    } else if(mode == Paint.modeResizeDown) {
         //down
         if(mouseY > yInit) {
             tempShape.setY0((int)((mouseY + yInit)/2));
             tempShape.setHeight(mouseY - yInit);
         }
         tempShape.init();
-    } else if(mode == Pain.modeResizeDownLeft) {
+    } else if(mode == Paint.modeResizeDownLeft) {
         //rightdown corner
         if(mouseX > xInit && mouseY > yInit) {
             tempShape.setX0((int)((mouseX + xInit)/2));
@@ -227,7 +227,7 @@ public void draw() {
             tempShape.setHeight(mouseY - yInit);
         }
         tempShape.init();
-    } else if(mode == Pain.modeMove) {
+    } else if(mode == Paint.modeMove) {
         //inner shape
         if(insideWorkingArea()) {
             tempShape.setX0(mouseX);

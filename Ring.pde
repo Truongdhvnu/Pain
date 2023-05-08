@@ -113,7 +113,7 @@ class Ring extends Shape {
     }
 
     void setMode() {
-        Pain.mode = Pain.modeSelected;
+        Paint.mode = Paint.modeSelected;
     }
 
     void show() {

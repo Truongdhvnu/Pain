@@ -39,7 +39,7 @@ class SendPoint {
     }
     
     void setMode() {
-        Pain.mode = Pain.modeSending;
+        Paint.mode = Paint.modeSending;
     }
     
     public void sendData() {
@@ -57,7 +57,7 @@ class SendPoint {
         pointToByteArray[3] = (byte)(255);
         //while(sendDataStatus[0] != REQUEST_DATA){};
         myPort.write(pointToByteArray);
-        Pain.sendDataStatus[0] = 0;
+        Paint.sendDataStatus[0] = 0;
         println("here1");
         
         //temp_x = round(realPointList.get(0).getX());

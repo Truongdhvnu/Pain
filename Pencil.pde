@@ -21,7 +21,7 @@ class Pencil {
     Pencil(ArrayList<Point> plist) {
         this.pointList = plist;
         for(Point p: plist) {
-            realPointList.add(new Point(p.getX()/Pain.canvasToRealRatio, (p.getY()-canvas.yWorkingAreaStart)/Pain.canvasToRealRatio));
+            realPointList.add(new Point(p.getX()/Paint.canvasToRealRatio, (p.getY()-canvas.yWorkingAreaStart)/Paint.canvasToRealRatio));
         }
     }
 
@@ -40,13 +40,13 @@ class Pencil {
     boolean addPoint(Point p) {
         if(pointList.size() == 0) {
             pointList.add(p);
-            realPointList.add(new Point(p.getX()/Pain.canvasToRealRatio, (p.getY()-canvas.yWorkingAreaStart)/Pain.canvasToRealRatio));
+            realPointList.add(new Point(p.getX()/Paint.canvasToRealRatio, (p.getY()-canvas.yWorkingAreaStart)/Paint.canvasToRealRatio));
             return true;
         } else {
             Point temp = pointList.get(pointList.size() - 1);
             if(abs(temp.getX() - p.getX()) >= canvasStepGather || abs(temp.getY() - p.getY()) >= canvasStepGather) {
                 pointList.add(p);
-                realPointList.add(new Point(p.getX()/Pain.canvasToRealRatio, (p.getY()-canvas.yWorkingAreaStart)/Pain.canvasToRealRatio));
+                realPointList.add(new Point(p.getX()/Paint.canvasToRealRatio, (p.getY()-canvas.yWorkingAreaStart)/Paint.canvasToRealRatio));
                 return true;
             }
             return false;
@@ -71,7 +71,7 @@ class Pencil {
     }
 
     void setMode() {
-        Pain.mode = Pain.modePencil;
+        Paint.mode = Paint.modePencil;
     }
 
     Pencil copy() {
