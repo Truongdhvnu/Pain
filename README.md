@@ -1,4 +1,4 @@
-# Pain
+# Paint
 ## Feature
 - This Desktop app be programming to create drawings and tranfer these to uC (2_stepper_control product) (debugging)
 - This app can draw with the mouse cursor, add and edit existing shapes or enter a function to draw according to this function
